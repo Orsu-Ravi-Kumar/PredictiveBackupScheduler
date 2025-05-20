@@ -1,37 +1,102 @@
-🚀 Autonomous Index Tuner  
+🧠 Predictive Backup Scheduler (AI + SQL Server + FastAPI + Docker)
+A machine learning-powered backup recommendation engine that predicts the optimal time to perform SQL Server backups based on historical workload and performance metrics.
+---
+🚀 Project Overview
+Traditional backup jobs run at fixed schedules, ignoring server load, query performance, or previous backup failures. This project solves that by using **machine learning to predict risky backup times** and offering a real-time **API recommendation engine**.
+> 📌 Goal: Prevent slow, failed, or disruptive backups by intelligently scheduling them during low-risk periods.
+---
+🧱 Tech Stack
+- SQL Server (Backupset + Query Stats)
+- Python 3.10, Pandas, Scikit-learn
+- FastAPI m(REST API Framework)
+- Docker (Containerized Deployment)
+- Uvicorn (ASGI Server)
+- (Optional: Azure Functions / Container Apps)
+---
+## 📊 ML Model Overview
+- Input Features:
+  - hour: Hour of the day
+  - day_of_week: Weekday (0=Monday)
+  - backup_size: Backup size in bytes
+- Label:
+  - failure_risk: 1 = risky (slow/failure), 0 = safe
+Trained using **Random Forest Classifier** on synthetic and real backup logs.
+---
+📁 Project Structure
+Predictive-Backup-Scheduler/
+├── data/ # backup_logs.csv, workload_metrics.csv
+├── models/ # backup_predictor.pkl
+├── scripts/ # feature_engineering.py, train_model.py
+├── app/ # fastapi_app.py
+├── deployment/
+│ └── docker/ # Dockerfile
+├── notebooks/ # Optional exploratory notebooks
+├── requirements.txt
+└── README.md
 
-Intelligently optimize database indexes to enhance performance!
 
-🔍 Overview  
-Autonomous Index Tuner is an AI-powered tool that automatically analyzes database queries and suggests optimal indexes, minimizing manual tuning efforts and significantly improving query efficiency.  
+ 📦 How to Run Locally
 
-🌟 Features  
-- 🤖 Smart Index Recommendations – AI-driven insights for better indexing.  
-- 📊 Performance Metrics – Detailed reports showcasing optimization impact.  
-- 🏗️ Ready-to-Use Jupyter Notebooks – Easily experiment with indexing strategies.  
-- 🐍 Built with Python – Flexible and powerful database tuning.  
+1. Clone this repo
 
-⚡ Installation  
 bash
-git clone https://github.com/Orsu-Ravi-Kumar/autonomous-index-tuner.git
+git clone https://github.com/<your-username>/Predictive-Backup-Scheduler.git
+cd Predictive-Backup-Scheduler
 
-cd autonomous-index-tuner
-
+--> Dependencies
 pip install -r requirements.txt
 
+--> Run Fast API app 
+uvicorn app.fastapi_app:app --reload
 
-🚀 How to Use  
-1️⃣ Load your dataset and queries into the tuner.  
-2️⃣ Execute the tuning script to analyze index needs.  
-3️⃣ Apply suggested indexes to optimize database performance.  
+🐳 Docker Support
+1. Build Docker image
+   
+docker build -t backup-scheduler -f deployment/docker/Dockerfile .
+2. Run the container
 
-📁 Repository Structure  
+docker run -p 8000:80 backup-scheduler
 
-📂 data/       -> Sample datasets for tuning  
-📂 notebooks/  -> Jupyter Notebooks for exploratory analysis  
-📂 src/        -> Core scripts for index recommendations  
+Visit:
+🔗 http://127.0.0.1:8000/docs
 
-👤 About the Author
-Ravikumar Orsu, a passionate software engineer with expertise in database optimization and AI-driven performance enhancements. 
-With a keen interest in automation and efficiency, I have created Autonomous Index Tuner to simplify database tuning and improve query execution. 
-Connect me on GitHub here to follow the latest projects!
+🧪 Example API Usage
+Endpoint: /predict/
+Method: GET
+
+Example:
+----------------------------------------
+/predict?hour=2&day_of_week=0&backup_size=52428800
+Returns:
+---------------------------------------
+{
+  "hour": 2,
+  "day_of_week": 0,
+  "backup_size": 52428800,
+  "prediction": 0,
+  "recommendation": "Recommended"
+}
+
+
+🧠 Key Outcomes
+✅ Predicts backup risks using AI
+
+✅ Automates backup decision-making
+
+✅ Containerized for cloud deployments
+
+✅ Lightweight, scalable, and practical
+
+📌 Use Cases
+💡 Automate backup job scheduling intelligently
+
+📉 Minimize failed or high-latency backups
+
+🔄 Integrate with SQL Server Agent or Azure Logic Apps
+
+☁️ Deploy to Azure for full-scale production use
+
+📬 Author
+Ravikumar Orsu
+💼 SQL Server DBA | Azure Data Engineer | AI Integrator
+🔗 [LinkedIn](https://www.linkedin.com/in/ravikumarorsu/)
